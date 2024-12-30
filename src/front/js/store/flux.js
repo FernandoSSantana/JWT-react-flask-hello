@@ -8,11 +8,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
 			]
 		},
 		actions: {
