@@ -7,11 +7,11 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, JWTManager
 
 api = Blueprint('api', __name__)
 bcrypt = Bcrypt()
-
+jwt = JWTManager()
 # Allow CORS requests to this API
 CORS(api)
 
@@ -25,32 +25,6 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-# @api.route('/register', methods=['POST'])
-# def register_user():
-#     data = request.get_json()
-    
-#     if not data:
-#         return jsonify({"error": "Datos no recibidos"}), 400
-
-#     email = data.get("email")
-#     password = data.get("password")
-
-#     if not email or not password:
-#         return jsonify({"error": "Todos los campos son obligatorios"}), 400
-
-#     # Hashear la contraseña antes de guardarla
-#     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-#     # Crear usuario
-#     new_user = User(email=email, password=hashed_password)
-    
-#     try:
-#         db.session.add(new_user)
-#         db.session.commit()
-#         return jsonify({"message": "Usuario registrado con éxito"}), 201
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({"error": str(e)}), 500
     
 
 @api.route('/create', methods=['POST'])
@@ -72,6 +46,13 @@ def login():
         return jsonify({"msg":"Login efectuado con exito","access_token":access_token})
     else:
         return jsonify({"error":"email o contraseña incorrectos"})
+    
+@api.route("/private", methods=["GET"])
+@jwt_required()
+def private():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    return jsonify({"message": "Bienvenido", "user": user.serialize()}), 200
     
 @api.route('/get', methods=['GET'])
 @jwt_required()

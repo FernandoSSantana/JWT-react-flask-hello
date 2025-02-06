@@ -10,7 +10,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				},
 			],
 			registerUser: [],
-			authToken: null,
+			// authToken: null,
+			token: localStorage.getItem("authToken") || null, 
 			user: null,
 		},
 		actions: {
@@ -93,7 +94,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error logging in", error);
 					return false;
 				}
-			}
+			},
+			logoutUser: () => {
+                localStorage.removeItem("token"); // Elimina el token de localStorage
+                setStore({ token: null }); // Resetea el estado global
+            },
+
+            isAuthenticated: () => {
+                return !!getStore().token; // Devuelve `true` si hay un token
+            }
 		}
 	};
 };

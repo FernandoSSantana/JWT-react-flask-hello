@@ -12,7 +12,8 @@ export const Login = () => {
 	const handleLogin = async () => {
 		const success = await actions.loginUser(email, password);
 		if (success) {
-			navigate("/");
+            alert("Usuario logado com sucesso!");
+			navigate("/prepriv");
 		} else {
 			alert("Login failed. Please check your credentials and try again.");
 		}
