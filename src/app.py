@@ -10,7 +10,7 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
-from api.rutas.user_routes import user_bp
+# from api.rutas.user_routes import user_bp
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
 
@@ -43,7 +43,7 @@ setup_commands(app)
 flask = JWTManager(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
-app.register_blueprint(user_bp, url_prefix='/user')
+# app.register_blueprint(user_bp, url_prefix='/user')
 # Handle/serialize errors like a JSON object
 
 app.config["SECRET_KEY"] = "clave secreta"
