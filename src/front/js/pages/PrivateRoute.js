@@ -4,14 +4,15 @@ import { Context } from "../store/appContext";
 
 const PrivateRoute = () => {
     const { store } = useContext(Context);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {    const token = localStorage.getItem("authToken");    return !!token});
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        setIsAuthenticated(!!token); // Actualiza el estado cuando el token cambia
+        const token = localStorage.getItem("authToken");
         console.log("Verificando autenticación:", token);
-    }, [store.token]); // Se ejecuta cada vez que cambia el token en el store
-
+        setIsAuthenticated(!!token); 
+        console.log("isAuthenticated ?",!!token);
+    }, [] ); 
+        console.log("isAuthenticated ?", isAuthenticated);
     return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
 

@@ -1,17 +1,13 @@
 import React, { useContext } from "react";
-// import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Link, useNavigate } from "react-router-dom";
 
 export const UserPage = () => {
-    // const { store, actions } = useContext(Context);
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        // limpiar user data del localStorage
         localStorage.removeItem("authToken");
         localStorage.removeItem("user");
-        // success message
         alert("You have successfully logged out.");
         navigate("/");
     };

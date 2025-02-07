@@ -10,12 +10,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				},
 			],
 			registerUser: [],
-			// authToken: null,
 			token: localStorage.getItem("authToken") || null, 
 			user: null,
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
+			
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
@@ -32,14 +31,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (!response.ok) {
 						const errorData = await response.json();
-						throw new Error(errorData.message); // Lanza el mensaje del backend
+						throw new Error(errorData.message);
 					}
 
 					const data = await response.json();
-					return true; // Registro exitoso
+					return true; 
 				} catch (error) {
 					console.error("Error al registrar el usuario:", error.message);
-					throw error; // Lanza el error al componente
+					throw error;
 				}
 			},
 			
@@ -50,7 +49,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const resp = await fetch(process.env.BACKEND_URL + "api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
+				
 					return data;
 				}catch(error){
 					console.log("Error loading message from backend", error)
@@ -60,14 +59,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//get the store
 				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
+
 				const demo = store.demo.map((elm, i) => {
 					if (i === index) elm.background = color;
 					return elm;
 				});
 
-				//reset the global store
+				
 				setStore({ demo: demo });
 			},
 
@@ -81,14 +79,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						setStore({ authToken: data.access_token, user: data.user });
-						localStorage.setItem("authToken", data.access_token); // Guarda el token en el almacenamiento local
-						localStorage.setItem("user", JSON.stringify(data.user)); // Guarda los datos del usuario
+						setStore({ token: data.access_token, user: data.user });
+						localStorage.setItem("authToken", data.access_token); 
+						localStorage.setItem("user", JSON.stringify(data.user)); 
 						console.log("Login successful!", data);
-						return true; // Indica éxito en el inicio de sesión 
+						return true; 
 					} else {
 						console.log("Login failed!");
-						return false; // Indica fracaso en el inicio de sesión 
+						return false; 
 					}
 				} catch (error) {
 					console.error("Error logging in", error);
@@ -96,12 +94,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			logoutUser: () => {
-                localStorage.removeItem("token"); // Elimina el token de localStorage
-                setStore({ token: null }); // Resetea el estado global
+                localStorage.removeItem("token"); 
+                setStore({ token: null }); 
             },
 
             isAuthenticated: () => {
-                return !!getStore().token; // Devuelve `true` si hay un token
+                return !!getStore().token; 
             }
 		}
 	};
